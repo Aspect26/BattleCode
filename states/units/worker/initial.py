@@ -12,7 +12,10 @@ class WorkerInitialState(State):
         # TODO: remove this
         directions = list(battlecode.Direction)
         # TODO: how to make the compiler know it is Unit type not Entity type
-        GC.get().move_robot(self.entity.get_id(), random.choice(directions))
+        try:
+            GC.get().move_robot(self.entity.get_id(), random.choice(directions))
+        except:
+            return
 
     def enter(self) -> None:
         pass

@@ -1,11 +1,11 @@
-from entities.entity import Entity
 from messages.message import Message
 from states.state import State
 
 
 class FiniteStateMachine:
 
-    def __init__(self, entity: Entity, begin_state: State, global_state: State):
+    # TODO: entity type causes circular dependency
+    def __init__(self, entity, begin_state: State, global_state: State):
         self._entity = entity
         self._current_state = begin_state
         self._global_state = global_state

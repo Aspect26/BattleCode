@@ -1,13 +1,13 @@
 from abc import abstractmethod
 
-from entities.entity import Entity
 from messages.message import Message
 
 
 class State:
 
-    def __init__(self, entity: Entity):
-        self.entity: Entity = entity
+    # TODO: entity type
+    def __init__(self, entity):
+        self.entity = entity
 
     def process_message(self, message: Message) -> bool:
         return False

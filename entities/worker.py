@@ -6,4 +6,4 @@ class Worker(Unit):
 
     def __init__(self, id: int):
         # TODO: add global state
-        super().__init__(WorkerInitialState(self), None, id)
+        super().__init__(WorkerInitialState(self), WorkerInitialState(self), id)
