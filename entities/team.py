@@ -1,7 +1,7 @@
 from typing import List
 
 from entities.entity import Entity
-from entities.worker import Worker
+from entities.units.robots.worker import Worker
 from game_state import GC
 from states.team.global_state import TeamGlobalState
 from states.team.initial_state import TeamInitialState
