@@ -1,24 +1,8 @@
-import random
-
-import battlecode
-
-from game_state import GC
 from states.state import State
+from states.units.robots.worker.going_to_nearest_karbonite import GoingToNearestKarboniteDepositState
 
 
 class WorkerInitialState(State):
 
     def run(self) -> None:
-        # TODO: remove this
-        directions = list(battlecode.Direction)
-        # TODO: how to make the compiler know it is Unit type not Entity type
-        try:
-            GC.get().move_robot(self.entity.id, random.choice(directions))
-        except:
-            return
-
-    def enter(self) -> None:
-        pass
-
-    def exit(self) -> None:
-        pass
+        self.entity.get_fsm().change_state(GoingToNearestKarboniteDepositState(self.entity))
