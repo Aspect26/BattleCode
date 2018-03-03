@@ -1,4 +1,5 @@
 from entities.team import Team
+from game.game_state import GC
 
 
 class AI:
@@ -8,3 +9,4 @@ class AI:
 
     def play_round(self):
         self._team.perform_entity_actions()
+        print(str(GC.get().round()) + ": Current karbonite: " + str(GC.get().karbonite()))

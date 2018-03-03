@@ -16,10 +16,8 @@ class State:
     def run(self) -> None:
         pass
 
-    @abstractmethod
     def enter(self) -> None:
-        pass
+        return
 
-    @abstractmethod
     def exit(self) -> None:
-        pass
+        return

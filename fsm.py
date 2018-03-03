@@ -4,7 +4,6 @@ from states.state import State
 
 class FiniteStateMachine:
 
-    # TODO: entity type causes circular dependency
     def __init__(self, entity, begin_state: State, global_state: State):
         self._entity = entity
         self._current_state = begin_state
@@ -19,7 +18,7 @@ class FiniteStateMachine:
     def update(self) -> None:
         assert self._global_state is not None
         assert self._current_state is not None
-        self._global_state.run()
+        # self._global_state.run()
         self._current_state.run()
 
     def process_message(self, message: Message) -> None:

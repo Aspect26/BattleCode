@@ -2,7 +2,7 @@ import battlecode as bc
 import random
 
 from ai import AI
-from game_state import GC
+from game.game_state import GC
 
 random.seed(6137)
 GC(bc.GameController())
