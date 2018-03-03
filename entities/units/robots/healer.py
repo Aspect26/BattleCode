@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.healer.initial import HealerInitialState
+from states.units.robots.healer.initial import HealerInitialState
 
 
 class Mage(Unit):

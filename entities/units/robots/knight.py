@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.knight.initial import KnightInitialState
+from states.units.robots.knight.initial import KnightInitialState
 
 
 class Knight(Unit):

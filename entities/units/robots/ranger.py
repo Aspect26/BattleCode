@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.ranger.initial import RangerInitialState
+from states.units.robots.ranger import RangerInitialState
 
 
 class Mage(Unit):

@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.mage.initial import MageInitialState
+from states.units.robots.mage.initial import MageInitialState
 
 
 class Mage(Unit):

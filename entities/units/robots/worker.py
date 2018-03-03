@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.worker.initial import WorkerInitialState
+from states.units.robots.worker.initial import WorkerInitialState
 
 
 class Worker(Unit):
