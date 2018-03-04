@@ -19,7 +19,7 @@ class GC:
     _earth_map = None
 
     @staticmethod
-    def get():
+    def get() -> bc.GameController:
         assert GC._game_state is not None
         return GC._game_state
 
@@ -28,5 +28,5 @@ class GC:
         return GC._karbonite_deposits.get_nearest(location)
 
     @staticmethod
-    def get_earth_map():
+    def get_earth_map() -> bc.PlanetMap:
         return GC._earth_map

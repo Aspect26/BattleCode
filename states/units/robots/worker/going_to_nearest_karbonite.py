@@ -11,7 +11,7 @@ class GoingToNearestKarboniteDepositState(State):
 
     def run(self) -> None:
         location = self.entity.get_map_location()
-        direction = SimplePathFinder.get_next_step(location, self._deposit.location)
+        direction = SimplePathFinder.get_next_direction(location, self._deposit.location)
 
         if location.is_adjacent_to(self._deposit.location):
             self._start_harvesting(direction)
