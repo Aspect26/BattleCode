@@ -18,8 +18,8 @@ class GoingToNearestKarboniteDepositState(UnitState):
             self._start_harvesting(direction_to_deposit)
             return
         
-        if self._path == []: 
-            self._path = PathFinder.get_shortest_path(location, self._deposit.location)
+        if self._path == [] or not GC.get().can_move(self.unit.id, self._path[0]): 
+            self._path = PathFinder.get_shortest_path(location, self._deposit.location, False)
         
         if (self.unit.get_unit().movement_heat() < 10):
             next_dir = self._path.pop(0)

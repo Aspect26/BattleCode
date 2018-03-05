@@ -9,7 +9,7 @@ class PathFinder:
         PathFinder.__directions = list(bc.Direction)[:-1]
         
     @staticmethod
-    def get_shortest_path(from_location : bc.MapLocation, to_location : bc.MapLocation):
+    def get_shortest_path(from_location : bc.MapLocation, to_location : bc.MapLocation, ignore_robots: bool):
         
         start = Node(from_location.x, from_location.y, bc.Direction.Center, None)
         
@@ -33,6 +33,9 @@ class PathFinder:
                 loc = bc.MapLocation(GC.get().planet(), first.x + d.dx(), first.y + d.dy())
 
                 if (loc.x, loc.y) in searched_locations or not GC.get_planet_map().on_map(loc):
+                    continue
+                    
+                if not ignore_robots and GC.get().has_unit_at_location(loc):
                     continue
                     
                 if GC.get_planet_map().is_passable_terrain_at(loc):
