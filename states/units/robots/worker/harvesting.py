@@ -22,7 +22,11 @@ class HarvestingState(State):
             self.entity.get_fsm().change_state(DeadState(self.entity))
             return
 
+        # print(f"Unit at {self.entity.get_map_location()} trying to harvest from {self._deposit.location}"
+        #      f"heading {self._deposit_direction}")
+
         self._deposit.observed_karbonite = GC.get().karbonite_at(self._deposit.location)
+        # print(f"observed carbonite is = {self._deposit.observed_karbonite}")
         if self._deposit.observed_karbonite <= 0 or self._couldnt_harvest_count > HarvestingState.COULDNT_HARVEST_THRESHOLD:
             print("[harvest] zero karbonite")
             self._deposit.being_harvested = False

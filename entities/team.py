@@ -13,32 +13,31 @@ from states.team.initial_state import TeamInitialState
 
 class Team(Entity):
 
-    _units: [Unit] = []
+    units: [Unit] = []
 
-    _workers: [Worker] = []
-    _mages: [Mage] = []
-    _rangers: [Ranger] = []
-    _knights: [Knight] = []
+    workers: [Worker] = []
+    mages: [Mage] = []
+    rangers: [Ranger] = []
+    knights: [Knight] = []
 
     def __init__(self):
         super().__init__(TeamInitialState(self), TeamGlobalState(self))
-        # TODO: add initial workers
         for bc_unit in GC.get().my_units():
             if (bc_unit.unit_type == bc.UnitType.Worker):
                 unit = Worker(bc_unit)
-                self._workers.append(unit)
+                self.workers.append(unit)
             elif (bc_unit.unit_type == bc.UnitType.Ranger):
                 unit = Ranger(bc_unit)
-                self._rangers.append(unit)
+                self.rangers.append(unit)
             elif (bc_unit.unit_type == bc.UnitType.Mage):
                 unit = Mage(bc_unit)
-                self._mages.append(unit)
+                self.mages.append(unit)
             elif (bc_unit.unit_type == bc.UnitType.Knight):
                 unit = Knight(bc_unit)
-                self._knights.append(unit)
+                self.knights.append(unit)
             
-            self._units.append(unit)
+            self.units.append(unit)
 
     def perform_unit_actions(self):
-        for unit in self._units:
+        for unit in self.units:
             unit.get_fsm().update()
