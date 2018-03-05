@@ -1,6 +1,7 @@
 from entities.entity import Entity
 from game.game_state import GC
 from states.state import State
+import battlecode as bc
 
 
 class Unit(Entity):
@@ -13,13 +14,13 @@ class Unit(Entity):
     def id(self) -> int:
         return self._unit.id
 
-    def get_map_location(self):
-        return self._get_unit().location.map_location()
+    def get_map_location(self) -> bc.MapLocation:
+        return self.get_unit().location.map_location()
 
     def is_dead(self):
-        return self._get_unit().health <= 0
+        return self.get_unit().health <= 0
 
-    def _get_unit(self):
+    def get_unit(self) -> bc.Unit:
         """
         We need this because the battlecode engine recreates all the units after each round, for some reason
         """

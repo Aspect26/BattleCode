@@ -1,29 +1,30 @@
 from game.game_state import GC
-from pathfinding.pathfinder import SimplePathFinder
-from states.state import State
+from pathfinding.pathfinder import PathFinder
+from states.units.unit_state import UnitState
 
-
-class GoingToNearestKarboniteDepositState(State):
+class GoingToNearestKarboniteDepositState(UnitState):
 
     def __init__(self, entity):
         super().__init__(entity)
         self._deposit = None
+        self._path = []
 
     def run(self) -> None:
         location = self.entity.get_map_location()
-        direction = SimplePathFinder.get_next_step(location, self._deposit.location)
-
+        
+        direction_to_deposit = location.direction_to(self._deposit.location)
+        
         if location.is_adjacent_to(self._deposit.location):
-            self._start_harvesting(direction)
+            self._start_harvesting(direction_to_deposit)
             return
+        
+        if self._path == []: 
+            self._path = PathFinder.get_shortest_path(location, self._deposit.location)
+        
+        if (self.unit.get_unit().movement_heat() < 10):
+            next_dir = self._path.pop(0)
+            GC.get().move_robot(self.unit.id, next_dir)
 
-        try:
-            GC.get().move_robot(self.entity.id, direction)
-        except:
-            return
-
-        if location.is_adjacent_to(self._deposit.location):
-            self._start_harvesting(direction)
 
     def enter(self):
         self._deposit = GC.get_nearest_karbonite_deposit(self.entity.get_map_location())
