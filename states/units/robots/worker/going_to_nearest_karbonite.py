@@ -14,14 +14,15 @@ class GoingToNearestKarboniteDepositState(UnitState):
         
         direction_to_deposit = location.direction_to(self._deposit.location)
         
-        if location.is_adjacent_to(self._deposit.location):
+        if (GC.get_planet_map().initial_karbonite_at(location) or location.is_adjacent_to(self._deposit.location))\
+                and GC.get().karbonite_at(self._deposit.location) > 0:
             self._start_harvesting(direction_to_deposit)
             return
         
         if self._path == [] or not GC.get().can_move(self.unit.id, self._path[0]): 
             self._path = PathFinder.get_shortest_path(location, self._deposit.location, False)
         
-        if (self.unit.get_unit().movement_heat() < 10):
+        if (self.unit.get_unit().movement_heat() < 10 and self._path != []):
             next_dir = self._path.pop(0)
             GC.get().move_robot(self.unit.id, next_dir)
 
