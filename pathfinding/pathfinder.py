@@ -6,32 +6,8 @@ from pathfinding.node import Node
 class PathFinder:
 
     def __init__(self):
-        PathFinder.directions = list(bc.Direction)
-        PathFinder.tryRotate = [0, -1, 1, -2, 2]
+        PathFinder.__directions = list(bc.Direction)[:-1]
         
-    @staticmethod
-    def rotate(dir, amount) -> bc.Direction:
-        ind = PathFinder.directions.index(dir)
-        return PathFinder.directions[(ind + amount) % 8]
-    
-    @staticmethod
-    def get_next_direction(from_location : bc.MapLocation, to_location : bc.MapLocation):
-        # TODO REMOVE (old simple pathfinder)
-        
-        if from_location == to_location: 
-            return bc.Direction.Center
-        toward = from_location.direction_to(to_location)
-        
-        for tilt in PathFinder.tryRotate:
-            
-            d = PathFinder.rotate(toward, tilt)
-            loc = bc.MapLocation(from_location.planet, from_location.x + d.dx(), from_location.y + d.dy())
-          
-            if GC.get_planet_map().on_map(loc) and GC.get().is_occupiable(loc):
-                return d
-        
-        return bc.Direction.Center
-    
     @staticmethod
     def get_shortest_path(from_location : bc.MapLocation, to_location : bc.MapLocation):
         
@@ -40,7 +16,8 @@ class PathFinder:
         searched_locations = set()
         searched_locations.add((from_location.x, from_location.y))
         
-        if (from_location.x == to_location.x and from_location.y == to_location.y) or not GC.get_planet_map().on_map(to_location):
+        if (from_location.x == to_location.x and from_location.y == to_location.y) \
+                or not GC.get_planet_map().on_map(to_location):
             return []
         
         queue = [start]
@@ -49,13 +26,10 @@ class PathFinder:
             first = queue.pop(0)
 
             if first.x == to_location.x and first.y == to_location.y:
-                return PathFinder._build_path_from_node(first)
+                return PathFinder.__build_path_from_node(first)
             
-            toward = from_location.direction_to(to_location)
-            for tilt in PathFinder.tryRotate:
+            for d in PathFinder.__directions:
 
-                d = PathFinder.rotate(toward, tilt)
-                
                 loc = bc.MapLocation(GC.get().planet(), first.x + d.dx(), first.y + d.dy())
 
                 if (loc.x, loc.y) in searched_locations or not GC.get_planet_map().on_map(loc):
@@ -68,7 +42,7 @@ class PathFinder:
         return [] # todo maybe some exception    
                 
     @staticmethod
-    def _build_path_from_node(first: Node) -> [bc.Direction]:
+    def __build_path_from_node(first: Node) -> [bc.Direction]:
         res = []
         
         while first.from_direction != bc.Direction.Center:
