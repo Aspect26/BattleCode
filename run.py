@@ -3,11 +3,11 @@ import random
 
 from ai import AI
 from game.game_state import GC
-from pathfinding.pathfinder import SimplePathFinder
+from pathfinding.pathfinder import PathFinder
 
 random.seed(6137)
 GC(bc.GameController())
-SimplePathFinder()
+PathFinder()
 ai = AI()
 
 while True:
