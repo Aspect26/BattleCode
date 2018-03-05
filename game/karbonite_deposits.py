@@ -1,5 +1,6 @@
 import battlecode as bc
 
+
 class KarboniteDepositInfo:
 
     def __init__(self, location, initial_karbonite):
@@ -25,21 +26,15 @@ class KarboniteDeposits:
                 self._deposits.append(KarboniteDepositInfo(map_location, location_karbonite_count))
 
     def get_nearest(self, location) -> KarboniteDepositInfo:
-        # TODO: use pathfinder here (iterate over all deposits, get nearest paths to them and choose the one with minimal nearest path
-        # TODO: but watch out for owned by enemy and also those that are running out!
-        # TODO: watch out also to not len all workers go to the same deposits!
         min_distance = 100000
         nearest_deposit = self._deposits[0]
-        deposits_count = 0
         for deposit in self._deposits:
             if not deposit.observed_owned_by_enemy and deposit.observed_karbonite > 0 and not deposit.being_harvested:
-                deposits_count += 1
                 deposit_distance = abs(deposit.location.x - location.x) + abs(deposit.location.y - location.y)
                 if deposit_distance < min_distance:
                     nearest_deposit = deposit
                     min_distance = deposit_distance
 
-        print("DC: " + str(deposits_count))
         return nearest_deposit
 
     def _print_deposits_info(self):

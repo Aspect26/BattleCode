@@ -1,5 +1,6 @@
 import battlecode as bc
 
+
 class Node:
 
     def __init__(self, x: int, y: int, from_direction: bc.Direction, previous_node):
