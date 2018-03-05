@@ -1,4 +1,3 @@
-from game.karbonite_deposits import KarboniteDeposits
 import battlecode as bc
 
 
@@ -11,6 +10,7 @@ class GC:
             raise Exception("State already set")
 
         GC._game_state = game_state
+        from game.karbonite_deposits import KarboniteDeposits
         GC._karbonite_deposits = KarboniteDeposits(game_state)
         GC._planet_map = game_state.starting_map(game_state.planet())
 

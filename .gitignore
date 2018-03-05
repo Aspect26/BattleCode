@@ -1,3 +1,4 @@
 .idea/
 battlecode/*
 bc/*
+**/__pycache__/**

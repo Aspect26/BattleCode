@@ -1,4 +1,3 @@
-from typing import List
 import battlecode as bc
 from entities.entity import Entity
 from entities.units.robots.worker import Worker
