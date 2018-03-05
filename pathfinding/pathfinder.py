@@ -1,13 +1,12 @@
 import battlecode as bc
 from game.game_state import GC
 from pathfinding.node import Node
-import random
+
 
 class PathFinder:
 
     def __init__(self):
-        PathFinder.directions = [bc.Direction.North, bc.Direction.Northeast, bc.Direction.East, bc.Direction.Southeast,
-                                 bc.Direction.South, bc.Direction.Southwest, bc.Direction.West, bc.Direction.Northwest]
+        PathFinder.directions = list(bc.Direction)
         PathFinder.tryRotate = [0, -1, 1, -2, 2]
         
     @staticmethod
