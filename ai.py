@@ -1,5 +1,5 @@
 from entities.team import Team
-from game.game_state import GC
+from game.game_controller import GC
 
 
 class AI:

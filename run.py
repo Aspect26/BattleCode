@@ -2,7 +2,7 @@ import battlecode as bc
 import random
 
 from ai import AI
-from game.game_state import GC
+from game.game_controller import GC
 from pathfinding.pathfinder import PathFinder
 
 random.seed(6137)

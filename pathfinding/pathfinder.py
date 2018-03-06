@@ -1,5 +1,5 @@
 import battlecode as bc
-from game.game_state import GC
+from game.game_controller import GC
 from pathfinding.node import Node
 
 

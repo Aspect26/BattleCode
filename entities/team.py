@@ -1,11 +1,14 @@
 import battlecode as bc
 from entities.entity import Entity
+from entities.researcher import Researcher
 from entities.units.robots.worker import Worker
 from entities.units.robots.mage import Mage
 from entities.units.robots.knight import Knight
 from entities.units.robots.ranger import Ranger
+from entities.units.structures.factory import Factory
 from entities.units.unit import Unit
-from game.game_state import GC
+from game.game_controller import GC
+from messages.message import Message
 from states.team.global_state import TeamGlobalState
 from states.team.initial_state import TeamInitialState
 
@@ -18,9 +21,13 @@ class Team(Entity):
     mages: [Mage] = []
     rangers: [Ranger] = []
     knights: [Knight] = []
+    factories: [Factory] = []
+    # Don't kill me please
+    instance = None
 
     def __init__(self):
         super().__init__(TeamInitialState(self), TeamGlobalState(self))
+        Team.instance = self
         for bc_unit in GC.get().my_units():
             if (bc_unit.unit_type == bc.UnitType.Worker):
                 unit = Worker(bc_unit)
@@ -34,9 +41,16 @@ class Team(Entity):
             elif (bc_unit.unit_type == bc.UnitType.Knight):
                 unit = Knight(bc_unit)
                 self.knights.append(unit)
-            
+
             self.units.append(unit)
+
+        if GC.get().planet() == bc.Planet.Earth:
+            self.units.append(Researcher())
 
     def perform_unit_actions(self):
         for unit in self.units:
             unit.get_fsm().update()
+
+    def send_message_to_factories(self, message: Message):
+        for factory in Team.factories:
+            factory.get_fsm().process_message(message)

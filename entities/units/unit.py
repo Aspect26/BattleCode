@@ -1,5 +1,5 @@
 from entities.entity import Entity
-from game.game_state import GC
+from game.game_controller import GC
 from states.state import State
 import battlecode as bc
 

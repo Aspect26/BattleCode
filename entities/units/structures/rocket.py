@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.structures.rocket.initial import RocketInitialState
+from states.units.structures.rocket.initial_state import RocketInitialState
 
 
 class Rocket(Unit):
