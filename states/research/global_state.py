@@ -10,6 +10,7 @@ class GlobalResearcherState(State):
     """
     Very simple researching. When we hit some fixed round number, we start some research.
     """
+    # TODO: accept messages that require some research
 
     def __init__(self, entity):
         super().__init__(entity)

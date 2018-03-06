@@ -20,3 +20,9 @@ class State:
 
     def exit(self) -> None:
         return
+
+    def paused(self) -> None:
+        return
+
+    def unpaused(self) -> None:
+        return

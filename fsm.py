@@ -4,7 +4,7 @@ from states.state import State
 
 class FiniteStateMachine:
 
-    TOO_LONG_PAUSE_THRESHOLD = 30  # TODO: is this good value? 
+    TOO_LONG_PAUSE_THRESHOLD = 30  # TODO: is this good value?
 
     def __init__(self, entity, begin_state: State, global_state: State):
         self._entity = entity
@@ -41,8 +41,12 @@ class FiniteStateMachine:
         self._global_state.process_message(message)
 
     def pause(self):
+        self._current_state.paused()
+        self._global_state.paused()
         self._paused = True
 
     def unpause(self):
+        self._current_state.unpaused()
+        self._global_state.unpaused()
         self._paused = False
         self._paused = 0
