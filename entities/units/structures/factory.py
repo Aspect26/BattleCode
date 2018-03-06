@@ -1,6 +1,6 @@
 import battlecode
 from entities.units.unit import Unit
-from states.units.structures.factory.initial import FactoryInitialState
+from states.units.structures.factory.initial_state import FactoryInitialState
 
 
 class Factory(Unit):

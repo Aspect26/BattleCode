@@ -1,5 +1,5 @@
 from states.state import State
-from states.units.robots.worker.going_to_nearest_karbonite import GoingToNearestKarboniteDepositState
+from states.units.robots.worker.going_to_nearest_karbonite_state import GoingToNearestKarboniteDepositState
 
 
 class WorkerInitialState(State):
