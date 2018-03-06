@@ -1,5 +1,6 @@
 import battlecode as bc
 from entities.entity import Entity
+from entities.researcher import Researcher
 from entities.units.robots.worker import Worker
 from entities.units.robots.mage import Mage
 from entities.units.robots.knight import Knight
@@ -26,7 +27,7 @@ class Team(Entity):
 
     def __init__(self):
         super().__init__(TeamInitialState(self), TeamGlobalState(self))
-        instance = self
+        Team.instance = self
         for bc_unit in GC.get().my_units():
             if (bc_unit.unit_type == bc.UnitType.Worker):
                 unit = Worker(bc_unit)
@@ -42,6 +43,9 @@ class Team(Entity):
                 self.knights.append(unit)
 
             self.units.append(unit)
+
+        if GC.get().planet() == bc.Planet.Earth:
+            self.units.append(Researcher())
 
     def perform_unit_actions(self):
         for unit in self.units:

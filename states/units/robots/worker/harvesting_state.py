@@ -15,31 +15,24 @@ class HarvestingState(State):
         self._couldnt_harvest_count = 0
 
     def run(self) -> None:
-        print("[harvest] run")
         if self.entity.is_dead():
-            print("[harvest] dead")
             self._deposit.being_harvested = False
             self.entity.get_fsm().change_state(DeadState(self.entity))
             return
 
         self._deposit.observed_karbonite = GC.get().karbonite_at(self._deposit.location)
         if self._deposit.observed_karbonite <= 0 or self._couldnt_harvest_count > HarvestingState.COULDNT_HARVEST_THRESHOLD:
-            print("[harvest] empty")
             self._deposit.being_harvested = False
             self.entity.get_fsm().change_state(GoingToNearestKarboniteDepositState(self.entity))
             return
 
         if GC.get().can_harvest(self.entity.id, self._deposit_direction):
             self._couldnt_harvest_count = 0
-            print("[harvest] harvsested: " + str(GC.get().harvest(self.entity.id, self._deposit_direction)))
         else:
-            print("[harvest] couldnt harvest")
             self._couldnt_harvest_count += 1
 
     def enter(self):
-        print("[harvest] enter")
         self._deposit.being_harvested = True
 
     def exit(self):
-        print("[harvest] exit")
         self._deposit.being_harvested = False
