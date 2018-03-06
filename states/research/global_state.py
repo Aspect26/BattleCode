@@ -22,9 +22,9 @@ class GlobalResearcherState(State):
             100: bc.UnitType.Ranger,
             125: bc.UnitType.Ranger,
             225: bc.UnitType.Ranger,
-            425: bc.Rocket,
-            475: bc.Rocket,
-            575: bc.Rocket,
+            425: bc.UnitType.Rocket,
+            475: bc.UnitType.Rocket,
+            575: bc.UnitType.Rocket,
         }
         self._blocking_spending_karbonite = False
 
