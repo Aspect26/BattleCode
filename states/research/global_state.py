@@ -47,6 +47,8 @@ class GlobalResearcherState(State):
         next_research = self._research_queue[0]
         if not GC.get().queue_research(next_research):
             print("ERROR: Could not research {0}".format(next_research))
+        else:
+            self._research_queue = self._research_queue[:-1]
 
     def _start_blocking_karbonite(self):
         Team.instance.send_message_to_factories(BlockKarboniteMessage())
