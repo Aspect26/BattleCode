@@ -9,13 +9,15 @@ from states.units.unit_state import UnitState
 class BuildingState(UnitState):
 
     _build_direction : bc.Direction = None
+    _build_structure_type: bc.UnitType = None
 
-    def __init__(self, unit, build_direction: bc.Direction):
+    def __init__(self, unit, build_structure_type: bc.UnitType, build_direction: bc.Direction):
         super().__init__(unit)
         self._build_direction = build_direction
+        self._build_structure_type = build_structure_type
         
     def enter(self):
-        GC.get().blueprint(self.unit.id, bc.UnitType.Factory, self._build_direction)
+        GC.get().blueprint(self.unit.id, self._build_structure_type, self._build_direction)
 
     def run(self) -> None:
         

@@ -23,7 +23,7 @@ class TeamEarlyState(TeamState):
             
             if builder is not None:
                 self._num_of_sent_builders += 1
-                builder.get_fsm().change_state(BuildingState(builder, build_direction))
+                builder.get_fsm().change_state(BuildingState(builder, bc.UnitType.Factory, build_direction))
         
         
     def _choose_best_builder(self, build_structure_type: bc.UnitType) -> (Worker, bc.Direction):
