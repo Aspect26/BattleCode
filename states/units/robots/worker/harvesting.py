@@ -1,4 +1,4 @@
-from game.game_state import GC
+from game.game_controller import GC
 from states.state import State
 from states.units.dead import DeadState
 from states.units.robots.worker.going_to_nearest_karbonite import GoingToNearestKarboniteDepositState

@@ -1,4 +1,4 @@
-from game.game_state import GC
+from game.game_controller import GC
 import battlecode as bc
 from pathfinding.pathfinder import PathFinder
 from game.karbonite_deposits import KarboniteDepositInfo
