@@ -15,15 +15,15 @@ class BuildingState(UnitState):
         self._build_direction = build_direction
         
     def enter(self):
-        GC.get().blueprint(self.unit.id, bc.UnitType.Factory, _build_direction)
+        GC.get().blueprint(self.unit.id, bc.UnitType.Factory, self._build_direction)
 
     def run(self) -> None:
         
-        adjacentUnits = gc.sense_nearby_units(unit.location.map_location(), 2)
+        adjacentUnits = GC.get().sense_nearby_units(self.unit.get_map_location(), 2)
         building_something = False
         for adjacent in adjacentUnits:
-            if gc.can_build(unit.id, adjacent.id):
-                gc.build(unit.id, adjacent.id)
+            if GC.get().can_build(self.unit.id, adjacent.id):
+                GC.get().build(self.unit.id, adjacent.id)
                 building_something = True
        
         if not building_something:

@@ -15,17 +15,21 @@ class TeamEarlyState(TeamState):
         
     def run(self) -> None:
         
-        if GC.get().karbonite() > 200 and self.team.factories == [] and self._num_of_sent_builders < 1:
-            # Todo, should also find "best" build spot and build direction
+        if GC.get().karbonite() > 200 and self.team.factories == [] and self._num_of_sent_builders < 1\
+                and len(self.team.workers) > 0:
+            # Todo, should also find "best" build spot
             
             (builder, build_direction) = self._choose_best_builder(bc.UnitType.Factory)
-            self._num_of_sent_builders += 1
-            builder.get_fsm().change_state(BuildingState(builder, build_direction))
+            
+            if builder is not None:
+                self._num_of_sent_builders += 1
+                builder.get_fsm().change_state(BuildingState(builder, build_direction))
         
         
     def _choose_best_builder(self, build_structure_type: bc.UnitType) -> (Worker, bc.Direction):
         # choose worker that is the furthest from the deposit for building
-        builder = self.team.workers[0]
+        builder = None
+        build_direction = None
         max_dist = 0
         for worker in self.team.workers:
 
@@ -33,12 +37,12 @@ class TeamEarlyState(TeamState):
             nearest_dep = GC.get_nearest_karbonite_deposit(worker_loc)
             path = PathFinder.get_shortest_path(worker_loc, nearest_dep.location, False)
 
-            if path is None:
-                return builder
+            for direction in bc.Direction:
+                if (path is None or len(path) > max_dist) and GC.get().can_blueprint(worker.id, build_structure_type, 
+                                                                                     direction):
+                    builder = worker
+                    build_direction = direction
+                    max_dist = len(path)
 
-            if len(path) > max_dist:
-                builder = worker
-                max_dist = len(path)
-
-            
+        return builder, build_direction
 

@@ -5,9 +5,14 @@ from states.units.robots.worker.going_to_nearest_karbonite import GoingToNearest
 
 class WorkerIdleState(UnitState):
 
+    def __init__(self, entity):
+        super().__init__(entity)
+
+    def enter(self):
+        self.run()
+
     def run(self) -> None:
         nearest_karbonite = GC.get_nearest_karbonite_deposit(self.unit.get_map_location())
         
-        if (nearest_karbonite.observed_karbonite > 0 and not nearest_karbonite.observed_owned_by_enemy):
+        if nearest_karbonite is not None:
             self.entity.get_fsm().change_state(GoingToNearestKarboniteDepositState(self.entity))
-        
