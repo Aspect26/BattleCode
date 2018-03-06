@@ -1,8 +1,6 @@
-from entities.units.robots.worker import Worker
 from states.units.robots.worker.idle import WorkerIdleState
-from game.game_state import GC
+from game.game_controller import GC
 import battlecode as bc
-from states.state import State
 from states.units.unit_state import UnitState
 
 
@@ -30,4 +28,3 @@ class BuildingState(UnitState):
        
         if not building_something:
             self.unit.get_fsm().change_state(WorkerIdleState(self.unit))
-    

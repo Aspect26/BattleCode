@@ -1,7 +1,6 @@
 from game.game_controller import GC
 from states.state import State
 from states.units.dead_state import DeadState
-from states.units.robots.worker.going_to_nearest_karbonite_state import GoingToNearestKarboniteDepositState
 
 
 class HarvestingState(State):

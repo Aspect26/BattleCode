@@ -1,27 +1,28 @@
 import battlecode as bc
 from game.karbonite_deposits import KarboniteDepositInfo
 
+
 class GC:
 
     # TODO: rework this
-    def __init__(self, game_state: bc.GameController):
-        if GC._game_state is not None:
+    def __init__(self, game_controller: bc.GameController):
+        if GC._game_controller is not None:
             # TODO: throw better exception
             raise Exception("State already set")
 
-        GC._game_state = game_state
+        GC._game_controller = game_controller
         from game.karbonite_deposits import KarboniteDeposits
-        GC._karbonite_deposits = KarboniteDeposits(game_state)
-        GC._planet_map = game_state.starting_map(game_state.planet())
+        GC._karbonite_deposits = KarboniteDeposits(game_controller)
+        GC._planet_map = game_controller.starting_map(game_controller.planet())
 
-    _game_state = None
+    _game_controller = None
     _karbonite_deposits = None
     _planet_map = None
 
     @staticmethod
     def get() -> bc.GameController:
-        assert GC._game_state is not None
-        return GC._game_state
+        assert GC._game_controller is not None
+        return GC._game_controller
 
     @staticmethod
     def get_nearest_karbonite_deposit(location) -> KarboniteDepositInfo:

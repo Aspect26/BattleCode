@@ -1,6 +1,6 @@
-from game.game_state import GC
+from game.game_controller import GC
 from states.units.unit_state import UnitState
-from states.units.robots.worker.going_to_nearest_karbonite import GoingToNearestKarboniteDepositState
+from states.units.robots.worker.going_to_nearest_karbonite_state import GoingToNearestKarboniteDepositState
 
 
 class WorkerIdleState(UnitState):
