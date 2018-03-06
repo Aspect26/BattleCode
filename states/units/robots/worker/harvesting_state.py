@@ -28,6 +28,7 @@ class HarvestingState(State):
 
         if GC.get().can_harvest(self.entity.id, self._deposit_direction):
             self._couldnt_harvest_count = 0
+            GC.get().harvest(self.entity.id, self._deposit_direction)
         else:
             self._couldnt_harvest_count += 1
 
