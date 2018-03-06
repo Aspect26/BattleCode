@@ -17,8 +17,14 @@ class GlobalResearcherState(State):
     def __init__(self, entity):
         super().__init__(entity)
         self._research_timeline = {
-            10: bc.UnitType.Ranger,
-            500: bc.UnitType.Rocket
+            1: bc.UnitType.Worker,
+            25: bc.UnitType.Worker,
+            100: bc.UnitType.Ranger,
+            125: bc.UnitType.Ranger,
+            225: bc.UnitType.Ranger,
+            425: bc.Rocket,
+            475: bc.Rocket,
+            575: bc.Rocket,
         }
         self._blocking_spending_karbonite = False
 
