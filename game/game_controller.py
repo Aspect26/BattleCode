@@ -1,5 +1,5 @@
 import battlecode as bc
-
+from game.karbonite_deposits import KarboniteDepositInfo
 
 class GC:
 
@@ -24,7 +24,7 @@ class GC:
         return GC._game_state
 
     @staticmethod
-    def get_nearest_karbonite_deposit(location):
+    def get_nearest_karbonite_deposit(location) -> KarboniteDepositInfo:
         return GC._karbonite_deposits.get_nearest(location)
 
     @staticmethod

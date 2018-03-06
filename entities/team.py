@@ -6,11 +6,12 @@ from entities.units.robots.mage import Mage
 from entities.units.robots.knight import Knight
 from entities.units.robots.ranger import Ranger
 from entities.units.structures.factory import Factory
+from entities.units.structures.rocket import Rocket
 from entities.units.unit import Unit
 from game.game_controller import GC
 from messages.message import Message
 from states.team.global_state import TeamGlobalState
-from states.team.initial_state import TeamInitialState
+from states.team.early import TeamEarlyState
 
 
 class Team(Entity):
@@ -21,24 +22,26 @@ class Team(Entity):
     mages: [Mage] = []
     rangers: [Ranger] = []
     knights: [Knight] = []
+
     factories: [Factory] = []
-    # Don't kill me please
+    rockets: [Rocket] = []
     instance = None
 
     def __init__(self):
-        super().__init__(TeamInitialState(self), TeamGlobalState(self))
+        super().__init__(TeamEarlyState(self), TeamGlobalState(self))
         Team.instance = self
+        
         for bc_unit in GC.get().my_units():
-            if (bc_unit.unit_type == bc.UnitType.Worker):
+            if bc_unit.unit_type == bc.UnitType.Worker:
                 unit = Worker(bc_unit)
                 self.workers.append(unit)
-            elif (bc_unit.unit_type == bc.UnitType.Ranger):
+            elif bc_unit.unit_type == bc.UnitType.Ranger:
                 unit = Ranger(bc_unit)
                 self.rangers.append(unit)
-            elif (bc_unit.unit_type == bc.UnitType.Mage):
+            elif bc_unit.unit_type == bc.UnitType.Mage:
                 unit = Mage(bc_unit)
                 self.mages.append(unit)
-            elif (bc_unit.unit_type == bc.UnitType.Knight):
+            elif bc_unit.unit_type == bc.UnitType.Knight:
                 unit = Knight(bc_unit)
                 self.knights.append(unit)
 
@@ -47,7 +50,9 @@ class Team(Entity):
         if GC.get().planet() == bc.Planet.Earth:
             self.units.append(Researcher())
 
-    def perform_unit_actions(self):
+    def perform_actions(self):
+        self.get_fsm().update()
+        
         for unit in self.units:
             unit.get_fsm().update()
 

@@ -7,8 +7,8 @@ from states.units.unit_state import UnitState
 
 class GoingToNearestKarboniteDepositState(UnitState):
 
-    _deposit : KarboniteDepositInfo = None
-    _path : [bc.Direction] = []
+    _deposit: KarboniteDepositInfo = None
+    _path: [bc.Direction] = []
 
     def __init__(self, entity):
         super().__init__(entity)
@@ -27,6 +27,9 @@ class GoingToNearestKarboniteDepositState(UnitState):
         
         if self._deposit.observed_karbonite <= 0:
             self._update_deposit()  # todo change to some other state if there isn't avaible deposit
+            if self._deposit.observed_karbonite <= 0:
+                from states.units.robots.worker.idle import WorkerIdleState
+                self.entity.get_fsm().change_state(WorkerIdleState)
 
         if self._path == [] or not GC.get().can_move(self.unit.id, self._path[0]):
             # print(f"Stucked trying to get from {location} to {self._deposit.location}, path = {self._path}")
