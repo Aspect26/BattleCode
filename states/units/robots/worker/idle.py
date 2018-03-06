@@ -16,3 +16,4 @@ class WorkerIdleState(UnitState):
         
         if nearest_karbonite is not None:
             self.entity.get_fsm().change_state(GoingToNearestKarboniteDepositState(self.entity))
+

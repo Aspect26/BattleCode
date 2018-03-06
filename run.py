@@ -1,3 +1,5 @@
+import traceback
+
 import battlecode as bc
 import random
 
@@ -14,5 +16,5 @@ while True:
     try:
         ai.play_round()
     except Exception as e:
-        print(e)
+        print(traceback.format_exc())
     GC.get().next_turn()

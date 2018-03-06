@@ -26,13 +26,14 @@ class GoingToNearestKarboniteDepositState(UnitState):
                 return
         
         if self._deposit.observed_karbonite <= 0:
-            self._update_deposit()  # todo change to some other state if there isn't avaible deposit
+            self._update_deposit()
+            if self._deposit is None:
+                return
             if self._deposit.observed_karbonite <= 0:
                 from states.units.robots.worker.idle import WorkerIdleState
                 self.entity.get_fsm().change_state(WorkerIdleState)
 
         if self._path == [] or not GC.get().can_move(self.unit.id, self._path[0]):
-            # print(f"Stucked trying to get from {location} to {self._deposit.location}, path = {self._path}")
             self._path = PathFinder.get_shortest_path(location, self._deposit.location, False)
         
         if self.unit.get_unit().movement_heat() < 10 and self._path != []:
@@ -44,6 +45,10 @@ class GoingToNearestKarboniteDepositState(UnitState):
         
     def _update_deposit(self):
         self._deposit = GC.get_nearest_karbonite_deposit(self.entity.get_map_location())
+        if self._deposit is None:
+            from states.units.robots.worker.idle import WorkerIdleState
+            # TODO: if we are on Earth we may actually stop searching for karbonite deposits because there are none
+            self.entity.get_fsm().change_state(WorkerIdleState(self.entity))
 
     def _start_harvesting(self, direction):
         from states.units.robots.worker.harvesting_state import HarvestingState

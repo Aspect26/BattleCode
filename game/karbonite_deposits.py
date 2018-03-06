@@ -27,7 +27,7 @@ class KarboniteDeposits:
 
     def get_nearest(self, location) -> KarboniteDepositInfo:
         min_distance = 100000
-        nearest_deposit = self._deposits[0]
+        nearest_deposit = None
         for deposit in self._deposits:
             if not deposit.observed_owned_by_enemy and deposit.observed_karbonite > 0 and not deposit.being_harvested:
                 deposit_distance = abs(deposit.location.x - location.x) + abs(deposit.location.y - location.y)
