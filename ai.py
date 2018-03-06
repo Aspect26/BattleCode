@@ -8,5 +8,5 @@ class AI:
         self._team = Team()
 
     def play_round(self):
-        self._team.perform_unit_actions()
+        self._team.perform_actions()
         print(str(GC.get().round()) + ": Current karbonite: " + str(GC.get().karbonite()))

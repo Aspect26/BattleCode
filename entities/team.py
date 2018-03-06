@@ -4,10 +4,12 @@ from entities.units.robots.worker import Worker
 from entities.units.robots.mage import Mage
 from entities.units.robots.knight import Knight
 from entities.units.robots.ranger import Ranger
+from entities.units.structures.factory import Factory
+from entities.units.structures.rocket import Rocket
 from entities.units.unit import Unit
 from game.game_state import GC
 from states.team.global_state import TeamGlobalState
-from states.team.initial_state import TeamInitialState
+from states.team.early import TeamEarlyState
 
 
 class Team(Entity):
@@ -18,9 +20,15 @@ class Team(Entity):
     mages: [Mage] = []
     rangers: [Ranger] = []
     knights: [Knight] = []
+    
+    factories: [Factory] = []
+    rockets: [Rocket] = []
 
     def __init__(self):
-        super().__init__(TeamInitialState(self), TeamGlobalState(self))
+
+        # todo remove team initial state (not necessary and we want to run TeamEarlyState in the first turn)
+        super().__init__(TeamEarlyState(self), TeamGlobalState(self)) 
+        
         for bc_unit in GC.get().my_units():
             if (bc_unit.unit_type == bc.UnitType.Worker):
                 unit = Worker(bc_unit)
@@ -37,6 +45,9 @@ class Team(Entity):
             
             self.units.append(unit)
 
-    def perform_unit_actions(self):
+    def perform_actions(self):
+        
+        self.get_fsm().update()
+        
         for unit in self.units:
             unit.get_fsm().update()

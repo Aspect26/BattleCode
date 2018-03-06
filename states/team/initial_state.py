@@ -1,8 +1,11 @@
-from states.state import State
+from states.team.early import TeamEarlyState
+from states.team.team_state import TeamState
 
 
-class TeamInitialState(State):
+class TeamInitialState(TeamState):
 
-    # TODO: team type
     def __init__(self, team):
         super().__init__(team)
+        
+    def run(self):
+        self.team.get_fsm().change_state(TeamEarlyState())

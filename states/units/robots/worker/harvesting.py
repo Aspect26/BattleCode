@@ -30,7 +30,10 @@ class HarvestingState(State):
         if self._deposit.observed_karbonite <= 0 or self._couldnt_harvest_count > HarvestingState.COULDNT_HARVEST_THRESHOLD:
             print("[harvest] zero karbonite")
             self._deposit.being_harvested = False
-            self.entity.get_fsm().change_state(GoingToNearestKarboniteDepositState(self.entity))
+
+            from states.units.robots.worker.idle import WorkerIdleState
+            self.entity.get_fsm().change_state(WorkerIdleState(self.entity))
+            
             return
 
         #if GC.get().can_harvest(self.entity.id, self._deposit_direction):
