@@ -1,8 +1,5 @@
-import random
-
-import battlecode as bc
-from game.game_controller import GC
 from states.state import State
+from states.units.robots.ranger.move_to_state import MoveToAndSenseEnemyState
 
 
 class RangerInitialState(State):
@@ -12,7 +9,6 @@ class RangerInitialState(State):
         self._unloaded = False
 
     def run(self) -> None:
-        # TODO: implement me
-        d = random.choice(list(bc.Direction))
-        if GC.get().can_move(self.entity.id, d):
-            GC.get().move_robot(self.entity.id, d)
+        if not self.entity.get_location().is_in_garrison():
+            from entities.team import Team
+            self.entity.get_fsm().change_state(MoveToAndSenseEnemyState(self.entity, Team.instance.get_next_pattrol_location()))

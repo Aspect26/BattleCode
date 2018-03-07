@@ -1,3 +1,5 @@
+import random
+
 import battlecode as bc
 from entities.entity import Entity
 from entities.researcher import Researcher
@@ -27,6 +29,7 @@ class Team(Entity):
     factories: [Factory] = []
     rockets: [Rocket] = []
     instance = None
+    map = None
 
     def __init__(self):
         super().__init__(TeamEarlyState(self), TeamGlobalState(self))
@@ -38,6 +41,8 @@ class Team(Entity):
         if GC.get().planet() == bc.Planet.Earth:
             self.units[-1] = Researcher()
 
+        self.map = GC.get().starting_map(GC.get().planet())
+
     def perform_actions(self):
         self.get_fsm().update()
         
@@ -48,7 +53,6 @@ class Team(Entity):
 
             self.units[unit_id].get_fsm().update()
 
-    # TODO: move this to message dispatcher
     def send_message_to_factories(self, message: Message):
         for factory in self.factories:
             factory.get_fsm().process_message(message)
@@ -76,3 +80,18 @@ class Team(Entity):
             raise Exception("[Team] Creating unit of non unit type: {0}".format(str(bc_unit.UnitType)))
 
         self.units[bc_unit.id] = unit
+
+    def get_opposite_team(self):
+        my_team = GC.get().team()
+        return bc.Team.Blue if my_team == bc.Team.Red else bc.Team.Red
+
+    def dispatch_message_to_all(self, message):
+        print("[Team] Dispatched message: {0}".format(message))
+        for unit in self.units.values():
+            unit.get_fsm().process_message(message)
+
+    def get_next_pattrol_location(self) -> bc.MapLocation:
+        # TODO: implement me
+        x = random.randint(0, self.map.width)
+        y = random.randint(0, self.map.height)
+        return bc.MapLocation(GC.get().planet(), x, y)

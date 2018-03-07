@@ -1,7 +1,7 @@
 from states.state import State
 
 
-class FactoryInitialState(State):
+class FactoryIdleState(State):
 
     def run(self) -> None:
         pass

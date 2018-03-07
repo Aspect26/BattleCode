@@ -17,6 +17,9 @@ class Unit(Entity):
     def get_map_location(self) -> bc.MapLocation:
         return self.get_unit().location.map_location()
 
+    def get_location(self):
+        return self.get_unit().location
+
     def is_dead(self):
         return self.get_unit().health <= 0
 
