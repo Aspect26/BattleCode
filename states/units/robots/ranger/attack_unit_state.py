@@ -5,13 +5,12 @@ from states.state import State
 
 class AttackUnitState(State):
 
-    def __init__(self, entity, unit_to_attack):
+    def __init__(self, entity, unit_id):
         super().__init__(entity)
-        self._target_id = unit_to_attack.id
+        self._target_id = unit_id
 
     # TODO: move around
     def run(self):
-        print("[AttackState] run")
         from states.units.robots.ranger.sensing_enemies import SensingEnemies
         visible_enemies = SensingEnemies.sense_enemies(self.entity)
 
@@ -19,28 +18,30 @@ class AttackUnitState(State):
             from entities.team import Team
             from states.units.robots.ranger.move_to_state import MoveToAndSenseEnemiesState
             self.entity.get_fsm().change_state(MoveToAndSenseEnemiesState(self.entity, Team.instance.get_next_patrol_location()))
+            return
 
         # if my target is not visible change my target to nearest and try shoot it, if visible but out of range, shoot at nearest but still pursue it, if in range, shoot it
-        nearest_enemy = None
-        nearest_enemy_distance = 10000
+        attackable_enemy = None
         my_target_visible = False
         my_target_unit = None
         for visible_enemy in visible_enemies:
             if visible_enemy.id == self._target_id:
                 my_target_visible = True
                 my_target_unit = visible_enemy
-            distance = self._get_distance_to_enemy(visible_enemy)
-            if distance < nearest_enemy_distance:
-                nearest_enemy_distance = distance
-                nearest_enemy = visible_enemy
+            if GC.get().can_attack(self.entity.id, visible_enemy.id):
+                attackable_enemy = visible_enemy
+
+        if attackable_enemy is None:
+            # TODO: it is not attackable but "random" visible then
+            attackable_enemy = visible_enemies[0]
 
         if not my_target_visible:
-            self._target_id = nearest_enemy.id
+            self._target_id = attackable_enemy.id
             if not self._try_shoot_at(self._target_id):
-                self._move_towards_target(nearest_enemy)
+                self._move_towards_target(attackable_enemy)
         else:
             if not self._try_shoot_at(self._target_id):
-                if not self._try_shoot_at(nearest_enemy.id):
+                if not self._try_shoot_at(attackable_enemy.id):
                     self._move_towards_target(my_target_unit)
 
     def _try_shoot_at(self, enemy_id: int) -> bool:

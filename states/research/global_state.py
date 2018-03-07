@@ -34,7 +34,7 @@ class GlobalResearcherState(State):
             self._enqueue_research(self._research_timeline[current_round])
 
     def process_message(self, message: Message) -> bool:
-        if message is QueueResearchMessage:
+        if isinstance(message, QueueResearchMessage):
             casted_message: QueueResearchMessage = message
             self._enqueue_research_to_level(casted_message.unit_type, casted_message.level)
             return True

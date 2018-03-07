@@ -50,3 +50,7 @@ class FiniteStateMachine:
         self._global_state.unpaused()
         self._paused = False
         self._paused = 0
+
+    # TODO: THIS SHOULD TOTALLY NOT BE VISIBLE! (refactor somehow when we have more time :(((((()
+    def get_current_state(self):
+        return self._current_state

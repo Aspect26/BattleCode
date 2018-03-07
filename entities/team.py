@@ -86,12 +86,10 @@ class Team(Entity):
         return bc.Team.Blue if my_team == bc.Team.Red else bc.Team.Red
 
     def dispatch_message_to_all(self, message):
-        print("[Team] Dispatched message: {0}".format(message))
         for unit in self.units.values():
             unit.get_fsm().process_message(message)
 
     def get_next_patrol_location(self) -> bc.MapLocation:
-        # TODO: implement me
         x = random.randint(0, self.map.width)
         y = random.randint(0, self.map.height)
         return bc.MapLocation(GC.get().planet(), x, y)
