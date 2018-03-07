@@ -25,12 +25,6 @@ class TeamEarlyState(TeamState):
                 self._num_of_sent_builders += 1
                 builder.get_fsm().change_state(BuildingState(builder, bc.UnitType.Factory, build_direction))
         
-        
-        
-        
-        
-        
-        
     def _choose_best_builder(self, build_structure_type: bc.UnitType) -> (Worker, bc.Direction):
         # choose worker that is the furthest from the deposit for building
         builder = None

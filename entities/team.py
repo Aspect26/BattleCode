@@ -16,7 +16,8 @@ from states.team.early import TeamEarlyState
 
 class Team(Entity):
 
-    units: [Unit] = []
+    # TODO: omg this is fucked up, we declare these static properties, but the use the instance and its instance properties
+    units: [Unit] = {}
 
     workers: [Worker] = []
     mages: [Mage] = []
@@ -32,30 +33,46 @@ class Team(Entity):
         Team.instance = self
         
         for bc_unit in GC.get().my_units():
-            if bc_unit.unit_type == bc.UnitType.Worker:
-                unit = Worker(bc_unit)
-                self.workers.append(unit)
-            elif bc_unit.unit_type == bc.UnitType.Ranger:
-                unit = Ranger(bc_unit)
-                self.rangers.append(unit)
-            elif bc_unit.unit_type == bc.UnitType.Mage:
-                unit = Mage(bc_unit)
-                self.mages.append(unit)
-            elif bc_unit.unit_type == bc.UnitType.Knight:
-                unit = Knight(bc_unit)
-                self.knights.append(unit)
-
-            self.units.append(unit)
+            self.add_unit(bc_unit)
 
         if GC.get().planet() == bc.Planet.Earth:
-            self.units.append(Researcher())
+            self.units[-1] = Researcher()
 
     def perform_actions(self):
         self.get_fsm().update()
         
-        for unit in self.units:
-            unit.get_fsm().update()
+        for unit in GC.get().my_units():
+            unit_id = unit.id
+            if unit_id not in self.units:
+                self.add_unit(unit)
 
+            self.units[unit_id].get_fsm().update()
+
+    # TODO: move this to message dispatcher
     def send_message_to_factories(self, message: Message):
-        for factory in Team.factories:
+        for factory in self.factories:
             factory.get_fsm().process_message(message)
+
+    def add_unit(self, bc_unit):
+        if bc_unit.unit_type == bc.UnitType.Worker:
+            unit = Worker(bc_unit)
+            self.workers.append(unit)
+        elif bc_unit.unit_type == bc.UnitType.Ranger:
+            unit = Ranger(bc_unit)
+            self.rangers.append(unit)
+        elif bc_unit.unit_type == bc.UnitType.Mage:
+            unit = Mage(bc_unit)
+            self.mages.append(unit)
+        elif bc_unit.unit_type == bc.UnitType.Knight:
+            unit = Knight(bc_unit)
+            self.knights.append(unit)
+        elif bc_unit.unit_type == bc.UnitType.Factory:
+            unit = Factory(bc_unit)
+            self.factories.append(unit)
+        elif bc_unit.unit_type == bc.UnitType.Rocket:
+            unit = Rocket(bc_unit)
+            self.rockets.append(unit)
+        else:
+            raise Exception("[Team] Creating unit of non unit type: {0}".format(str(bc_unit.UnitType)))
+
+        self.units[bc_unit.id] = unit

@@ -8,4 +8,4 @@ class TeamInitialState(TeamState):
         super().__init__(team)
         
     def run(self):
-        self.team.get_fsm().change_state(TeamEarlyState())
+        self.team.get_fsm().change_state(TeamEarlyState(self.entity))
