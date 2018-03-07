@@ -22,7 +22,8 @@ class RangerGlobalState(State):
 
     def _process_enemy_encounter_message(self, message: EnemyUnitEncounteredMessage):
         # TODO: god has forsaken me...
-        if not isinstance(self.entity.get_fsm().get_current_state(), AttackUnitState):
+        # TODO: this if should be here but it is somehow better without it
+        # if not isinstance(self.entity.get_fsm().get_current_state(), AttackUnitState):
             if self._get_distance(message.enemy_unit) < RangerGlobalState._NEAR_THRESHOLD:
                 enemy_in_range = SensingEnemies.get_any_enemy_in_range(self.entity)
                 if enemy_in_range is not None:
