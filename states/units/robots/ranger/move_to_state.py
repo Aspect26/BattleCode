@@ -1,11 +1,12 @@
 import battlecode as bc
 from game.game_controller import GC
 from pathfinding.pathfinder import PathFinder
-from states.units.robots.ranger.sense_enemies_state import SenseEnemyUnitsState
+from states.state import State
+from states.units.robots.ranger.sensing_enemies import SensingEnemies
 from states.units.robots.ranger.stand_by_state import StandByAndSenseEnemyState
 
 
-class MoveToAndSenseEnemyState(SenseEnemyUnitsState):
+class MoveToAndSenseEnemiesState(State):
 
     _STUCK_THRESHOLD = 5
 
@@ -16,7 +17,8 @@ class MoveToAndSenseEnemyState(SenseEnemyUnitsState):
         self._stuck_for = 0
 
     def run(self) -> None:
-        super().run()
+        if SensingEnemies.sense_and_attack(self.entity):
+            return
 
         if len(self._route) == 0:
             self.entity.get_fsm().change_state(StandByAndSenseEnemyState(self.entity))
@@ -30,12 +32,12 @@ class MoveToAndSenseEnemyState(SenseEnemyUnitsState):
                 self._stuck_for = 0
         else:
             self._stuck_for += 1
-            if self._stuck_for > MoveToAndSenseEnemyState._STUCK_THRESHOLD:
+            if self._stuck_for > MoveToAndSenseEnemiesState._STUCK_THRESHOLD:
                 print("[MoveToAndSenseEnemyState] entity stuck")
-                self._recompute_route()
+                self._recompute_route(False)
 
     def enter(self):
-        self._recompute_route()
+        self._recompute_route(True)
 
-    def _recompute_route(self):
-        self._route = PathFinder.get_shortest_path(self.entity.get_map_location(), self._moving_to_location, True)
+    def _recompute_route(self, ignore_robots):
+        self._route = PathFinder.get_shortest_path(self.entity.get_map_location(), self._moving_to_location, ignore_robots)

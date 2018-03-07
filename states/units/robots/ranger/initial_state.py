@@ -1,5 +1,5 @@
 from states.state import State
-from states.units.robots.ranger.move_to_state import MoveToAndSenseEnemyState
+from states.units.robots.ranger.move_to_state import MoveToAndSenseEnemiesState
 
 
 class RangerInitialState(State):
@@ -11,4 +11,4 @@ class RangerInitialState(State):
     def run(self) -> None:
         if not self.entity.get_location().is_in_garrison():
             from entities.team import Team
-            self.entity.get_fsm().change_state(MoveToAndSenseEnemyState(self.entity, Team.instance.get_next_pattrol_location()))
+            self.entity.get_fsm().change_state(MoveToAndSenseEnemiesState(self.entity, Team.instance.get_next_patrol_location()))

@@ -90,7 +90,7 @@ class Team(Entity):
         for unit in self.units.values():
             unit.get_fsm().process_message(message)
 
-    def get_next_pattrol_location(self) -> bc.MapLocation:
+    def get_next_patrol_location(self) -> bc.MapLocation:
         # TODO: implement me
         x = random.randint(0, self.map.width)
         y = random.randint(0, self.map.height)
