@@ -1,7 +1,6 @@
 from entities.units.unit import Unit
 from states.state import State
 
-
 class UnitState(State):
     
     unit: Unit = None
