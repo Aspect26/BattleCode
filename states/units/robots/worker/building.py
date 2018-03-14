@@ -37,8 +37,6 @@ class BuildingState(UnitState):
         
         unit_at_building_location = GC.get().sense_unit_at_location(self._build_location)
         if unit_at_building_location.structure_is_built():
-            print(f"Worker at {self.unit.get_map_location()} is successfully done with building "
-                  f"{self._build_structure_type} at {self._build_location}.")
             from entities.team import Team
             Team.instance.add_unit(unit_at_building_location)
             self.unit.get_fsm().change_state(WorkerIdleState(self.unit))
